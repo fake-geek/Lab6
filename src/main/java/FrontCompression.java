@@ -41,11 +41,16 @@ public class FrontCompression {
             return "";
         }
 
-        /*
-         * Complete this function.
-         */
+        String[] corpusSplit = corpus.split("\n");
+        String[] buffer = new String[corpusSplit.length];
+        buffer[0] = "0," + corpusSplit[0];
+        for (int i = 0; i < corpusSplit.length - 1; i++) {
+            int len = longestPrefix(corpusSplit[i], corpusSplit[i + 1]);
+            buffer[i + 1] = len + "," + corpusSplit[i + 1].substring(len);
+        }
 
-        return "";
+        String finalString = String.join("\n", buffer);
+        return finalString;
     }
 
     /**
@@ -64,11 +69,22 @@ public class FrontCompression {
             return "";
         }
 
-        /*
-         * Complete this function.
-         */
+        String[] corpusSplit = corpus.split("\n");
+        String[] buffer = new String[corpusSplit.length];
+        //String[] splitted = new String[buffer.length];
+        buffer[0] = corpusSplit[0].substring(2);
+        for (int i = 1; i < corpusSplit.length; i++) {
+            String[] splited = corpusSplit[i].split(",");
+            int len = Integer.parseInt(splited[0]);
+            if (len == 0) {
+                buffer[i] = splited[1] + "\n";
+            } else {
+                buffer[i] = buffer[i - 1].substring(0, len) + splited[1] + "\n";
+            }
+        }
 
-        return "";
+        String finalString = String.join("\n", buffer);
+        return finalString;
     }
 
     /**
@@ -79,10 +95,21 @@ public class FrontCompression {
      * @return the length of the common prefix between the two strings
      */
     private static int longestPrefix(final String firstString, final String secondString) {
-        /*
-         * Complete this function.
-         */
-        return 0;
+        int len = 0;
+        if (firstString.length() >= secondString.length()) {
+            for (int i = 0; i < firstString.length(); i++) {
+                if (firstString.charAt(i) == secondString.charAt(i)) {
+                    len++;
+                }
+            }
+        } else {
+            for (int i = 0; i < secondString.length(); i++) {
+                if (firstString.charAt(i) == secondString.charAt(i)) {
+                    len++;
+                }
+            }
+        }
+        return len;
     }
 
     /**
